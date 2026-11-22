@@ -1,124 +1,172 @@
-# 🎬 code-animation — Antigravity Skill
+<div align="center">
 
-> A comprehensive skill that teaches AI assistants (Gemini, Claude, etc.) to create stunning animations with code — covering every major library, style, and technique.
+# 🎬 Motion-Mini
 
-## What This Skill Does
+### *A complete Antigravity AI skill for creating animations with code*
 
-When activated in [Antigravity](https://antigravity.dev), this skill transforms the AI into an **expert animation engineer** who can:
+[![License: MIT](https://img.shields.io/badge/License-MIT-6366f1.svg?style=flat-square)](LICENSE)
+[![p5.js](https://img.shields.io/badge/p5.js-creative%20coding-ED225D?style=flat-square)](https://p5js.org)
+[![GSAP](https://img.shields.io/badge/GSAP-animation-88CE02?style=flat-square)](https://gsap.com)
+[![Three.js](https://img.shields.io/badge/Three.js-3D-black?style=flat-square)](https://threejs.org)
+[![Framer Motion](https://img.shields.io/badge/Framer-Motion-0055FF?style=flat-square)](https://framer.com/motion)
+[![Manim](https://img.shields.io/badge/Manim-Python-306998?style=flat-square)](https://www.manim.community)
 
-- Generate **complete, runnable animation code** for any request
-- Apply the **12 Disney animation principles** to code
-- Choose the **right library** for each use case
-- Create animations in **10+ distinct visual styles**
-- Explain the **why** behind timing, easing, and motion choices
+</div>
 
-## Skill Structure
+---
+
+## 🎥 Demo — Dadah Warga Kota (10 detik)
+
+> *Built with Motion-Mini skill · p5.js · Full anomaly chaos 🤪*
+
+![Dadah Warga Kota Animation](https://raw.githubusercontent.com/jenniferhebertgqm277-create/Motion-Mini/main/assets/demo/dadah-warga-kota.gif)
+
+<div align="center">
+
+*10 detik animasi chaos: lengan super panjang, merpati raksasa bertopi,  
+gedung dengan googly eyes, kucing nyetir mobil, gravity flip & lebih banyak lagi 🫡*
+
+</div>
+
+---
+
+## ✨ What is Motion-Mini?
+
+Motion-Mini is a **skill for [Antigravity AI](https://antigravity.dev)** that transforms any AI assistant into an **expert animation engineer**. When activated, the AI can:
+
+- 🎯 **Choose the right tool** for every use case automatically  
+- 🎨 **Apply 10 visual styles** (Minimal, Cinematic, Retro, Glassmorphism, Kawaii, Cyberpunk...)  
+- 🧠 **Apply all 12 Disney Animation Principles** to code  
+- 📦 **Generate complete, runnable code** — never partial snippets  
+- 🏎️ **Enforce 60fps** — only animates GPU-composited properties  
+
+---
+
+## 📦 Skill Structure
 
 ```
-code-animation/
-├── SKILL.md                  # Main skill instructions & quick reference
-├── examples/
-│   ├── loaders.html          # 10 pure-CSS loader animations
-│   ├── particles.html        # Canvas API particle system
-│   └── parallax.html         # GSAP ScrollTrigger parallax page
-└── references/
-    ├── css-animations.md     # Complete CSS animation reference
-    ├── gsap.md               # Full GSAP API (tweens, timelines, ScrollTrigger)
-    ├── framer-motion.md      # Framer Motion complete guide (React)
-    ├── threejs.md            # Three.js 3D scenes, shaders, particles
-    ├── p5js.md               # p5.js creative coding patterns
-    ├── manim.md              # Manim Python animation guide
-    └── styles.md             # 10 animation style catalog with templates
+Motion-Mini/
+├── 📄 SKILL.md                   ← Main skill (AI reads this)
+├── 📂 examples/
+│   ├── 🌀 loaders.html           ← 10 pure-CSS loaders
+│   ├── ✨ particles.html          ← Canvas particle system  
+│   └── 🌊 parallax.html          ← GSAP ScrollTrigger page
+└── 📂 references/
+    ├── css-animations.md         ← Full CSS reference
+    ├── gsap.md                   ← GSAP API + patterns
+    ├── framer-motion.md          ← React animations
+    ├── threejs.md                ← 3D / WebGL
+    ├── p5js.md                   ← Creative coding
+    ├── manim.md                  ← Python math animations
+    └── styles.md                 ← 10-style catalog + templates
 ```
 
-## Libraries Covered
+---
 
-| Library | Use Case |
-|---------|----------|
-| **CSS Animations** | Zero-dependency web animations |
-| **GSAP** | Professional web timelines & ScrollTrigger |
-| **Framer Motion** | React component animations |
-| **Three.js** | WebGL / 3D scenes |
-| **p5.js** | Generative art & creative coding |
-| **Manim** | Math/educational Python animations |
-| **D3.js** | Data-driven transitions |
-| **SVG** | Path drawing & morphing |
+## 🛠️ Libraries Covered
 
-## Animation Styles
+| Library | Use Case | Coverage |
+|---------|----------|----------|
+| **CSS Animations** | Zero-dependency web animations | ⭐⭐⭐ Full |
+| **GSAP** | Timelines, ScrollTrigger, Flip | ⭐⭐⭐ Full |
+| **Framer Motion** | React component animations | ⭐⭐⭐ Full |
+| **Three.js** | WebGL / 3D scenes | ⭐⭐⭐ Full |
+| **p5.js** | Generative art, particles | ⭐⭐⭐ Full |
+| **Manim** | Python math explainers | ⭐⭐⭐ Full |
+| **SVG** | Path drawing & morphing | ⭐⭐ Covered |
+| **D3.js** | Data-driven transitions | ⭐⭐ Covered |
 
-1. **Minimal / Clean** — Subtle, purposeful, monochrome
-2. **Cinematic** — Slow, film-inspired, letterbox reveals
-3. **Retro / Pixel** — `steps()` easing, CRT scanlines, sprite animation
-4. **Glassmorphism** — Blur reveals, iridescence, frosted layers
-5. **Brutalist** — Hard cuts, glitch, raw energy
-6. **Kawaii / Playful** — Bouncy springs, squash & stretch, confetti
-7. **Cyberpunk / Neon** — Glow pulses, RGB split, holographic
-8. **Nature / Organic** — Perlin noise, breathing rhythms, ripples
-9. **Data-Driven** — Counters, chart transitions, progress reveals
-10. **3D / Spatial** — WebGL depth, particles, post-processing
+---
 
-## Installation
+## 🎨 10 Animation Styles
 
-### Option A: Global (all projects)
+```
+1.  Minimal / Clean      → Subtle, monochrome, purposeful
+2.  Cinematic            → Film-paced, blur reveals, letterbox
+3.  Retro / Pixel        → steps() easing, CRT scanlines, sprites
+4.  Glassmorphism        → Blur reveals, iridescence, frosted
+5.  Brutalist            → Hard cuts, glitch, RGB split
+6.  Kawaii / Playful     → Bouncy springs, squash & stretch
+7.  Cyberpunk / Neon     → Glow pulses, holographic shimmer
+8.  Nature / Organic     → Perlin noise, breath, ripples
+9.  Data-Driven          → Counters, chart transitions, progress
+10. 3D / Spatial         → WebGL depth, particles, post-FX
+```
+
+---
+
+## 🚀 Installation
+
+### Global (all projects)
 ```
 ~/.gemini/config/skills/code-animation/
 ```
-Copy this folder there. Antigravity auto-discovers it.
+Copy this folder there — Antigravity discovers it automatically.
 
-### Option B: Per-project
+### Per-project (team shared)
 ```
-your-project/.agents/skills/code-animation/
+your-project/.agents/skills/Motion-Mini/
 ```
-Check it into version control to share with your team.
+Commit to version control so your whole team gets it.
 
-### Option C: Explicit config
-Add to `skills.json`:
-```json
-{
-  "skills": ["path/to/code-animation"]
-}
+---
+
+## ⚡ Quick Decision Framework
+
+```
+User wants...                     → Use
+─────────────────────────────────────────────────────────
+Web UI micro-interactions         → CSS animations
+Complex web sequences/timelines   → GSAP (GreenSock)
+React component animations        → Framer Motion
+SVG path animations               → CSS + SVG / GSAP
+3D scenes / WebGL                 → Three.js
+Data-driven motion graphics       → D3.js
+Math/educational explainers       → Manim (Python)
+Generative art / particles        → p5.js / Canvas API
 ```
 
-## Example Outputs
+---
 
-The AI will produce code like this when activated:
+## 📐 The 12 Disney Principles (In Code)
 
-```html
-<!-- Complete, runnable hero animation — GSAP -->
-<div class="hero">
-  <h1 class="hero-title">Hello World</h1>
-  <p class="hero-sub">Subtitle text</p>
+| # | Principle | Code Equivalent |
+|---|-----------|----------------|
+| 1 | Squash & Stretch | `scaleX(1.2) scaleY(0.8)` on impact |
+| 2 | Anticipation | `-10px` before `+100px` jump |
+| 3 | Staging | Stagger reveals, one focus at a time |
+| 4 | Pose-to-Pose | Keyframes define poses |
+| 5 | Follow Through | Child elements lag with `delay` |
+| 6 | Slow In/Out | Always easing — never `linear` for UI |
+| 7 | Arcs | `offset-path` or bezier motion paths |
+| 8 | Secondary Action | Shadow bounce, hair wobble |
+| 9 | Timing | UI: 150-400ms · Cinematic: 600ms-2s |
+| 10 | Exaggeration | Push values 20-30% beyond realistic |
+| 11 | Solid Drawing | Understand 3D form even in 2D |
+| 12 | Appeal | 60fps minimum · Test on real devices |
+
+---
+
+## ⚙️ Performance Rules (Always Enforced)
+
+- ✅ Only animate `transform`, `opacity`, `filter` (GPU-composited)
+- ✅ Use `requestAnimationFrame` — never `setInterval`
+- ✅ Include `@media (prefers-reduced-motion: reduce)` override
+- ✅ Target 60fps — 16.67ms per frame budget
+- ❌ Never animate `width`, `height`, `top`, `left`, `margin`
+
+---
+
+## 📄 License
+
+MIT — use freely in personal and commercial projects.
+
+---
+
+<div align="center">
+
+Made with 🎬 by the Motion-Mini skill for [Antigravity AI](https://antigravity.dev)
+
+*Star ⭐ if this helped you animate something awesome!*
+
 </div>
-<script>
-const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-tl.from(".hero-title", { y: 60, opacity: 0, duration: 0.8 })
-  .from(".hero-sub",   { y: 40, opacity: 0, duration: 0.6 }, "-=0.3");
-</script>
-```
-
-## Decision Framework (Quick Reference)
-
-```
-User wants...                    → Use
-─────────────────────────────────────────────
-Web UI micro-interactions        → CSS animations
-Complex web sequences            → GSAP
-React component animations       → Framer Motion
-3D / WebGL                       → Three.js
-Generative art / particles       → p5.js
-Math educational explainers      → Manim (Python)
-Data-driven motion graphics      → D3.js
-SVG path animations              → CSS + SVG / GSAP
-```
-
-## Contributing
-
-PRs welcome! Especially:
-- New library references (Anime.js, Motion One, Rive)
-- More example files (data viz, 3D scenes)
-- Additional style guides
-- Framework integrations (Vue, Svelte, Solid)
-
-## License
-
-MIT
