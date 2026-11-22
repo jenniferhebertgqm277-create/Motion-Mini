@@ -1,0 +1,37 @@
+name: Render 3D video
+
+# Run from the Actions tab (works fine from a phone browser).
+on:
+  workflow_dispatch:
+    inputs:
+      page:
+        description: "HTML page to render"
+        default: "examples/3d-video-template.html"
+      fps:
+        description: "Frames per second"
+        default: "30"
+      gif:
+        description: "Also export a GIF (true/false)"
+        default: "true"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Install ffmpeg + deps
+        run: |
+          sudo apt-get update -y && sudo apt-get install -y ffmpeg
+          cd tools && npm install
+      - name: Render
+        run: |
+          cd tools
+          EXTRA=""
+          if [ "${{ inputs.gif }}" = "true" ]; then EXTRA="--gif"; fi
+          node render-video.mjs ../${{ inputs.page }} ../out/video.mp4 --fps ${{ inputs.fps }} $EXTRA
+      - uses: actions/upload-artifact@v4
+        with:
+          name: motion-mini-render
+          path: out/*

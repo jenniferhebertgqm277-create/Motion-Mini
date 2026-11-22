@@ -15,18 +15,17 @@
 
 ---
 
-## 🎥 Demo — Dadah Warga Kota (10 detik)
+## 🎥 Demo — Dadah Warga Kota **3D** (13 detik)
 
-> *Built with Motion-Mini skill · p5.js · Full anomaly chaos 🤪*
+> v2: Three.js · pencahayaan 3 titik · bayangan · kabut · kamera spline · render deterministik
 
-![Dadah Warga Kota Animation](https://raw.githubusercontent.com/jenniferhebertgqm277-create/Motion-Mini/main/assets/demo/dadah-warga-kota.gif)
+Buka `examples/3d-video-template.html` di browser (ada tombol play + scrubber).
+Tiga adegan, **satu fokus per adegan**: kota senja → karakter melambai (kamera orbit) → kota malam + burung (crane up).
 
-<div align="center">
+Jadikan MP4/GIF: **Actions → Render 3D video → Run workflow** (bisa dari HP) atau
+`cd tools && npm i && node render-video.mjs ../examples/3d-video-template.html ../out/video.mp4 --gif`.
 
-*10 detik animasi chaos: lengan super panjang, merpati raksasa bertopi,  
-gedung dengan googly eyes, kucing nyetir mobil, gravity flip & lebih banyak lagi 🫡*
-
-</div>
+<sub>Demo v1 (2D p5.js, 10 fps) disimpan di `assets/legacy/` sebagai perbandingan.</sub>
 
 ---
 
@@ -46,20 +45,29 @@ Motion-Mini is a **skill for [Antigravity AI](https://antigravity.dev)** that tr
 
 ```
 Motion-Mini/
-├── 📄 SKILL.md                   ← Main skill (AI reads this)
+├── 📄 SKILL.md                         ← router + aturan inti (kecil, hemat token)
+├── 📂 references/
+│   ├── video-3d-pipeline.md            ← storyboard, Rule of One, lighting, kamera, export, sinkron audio
+│   ├── prompt-templates.md             ← prompt panjang siap pakai (ID/EN) + prompt expander
+│   ├── token-saver.md                  ← aturan hemat limit/token
+│   ├── css-animations.md · gsap.md · framer-motion.md
+│   └── threejs.md · p5js.md · manim.md · styles.md
 ├── 📂 examples/
-│   ├── 🌀 loaders.html           ← 10 pure-CSS loaders
-│   ├── ✨ particles.html          ← Canvas particle system  
-│   └── 🌊 parallax.html          ← GSAP ScrollTrigger page
-└── 📂 references/
-    ├── css-animations.md         ← Full CSS reference
-    ├── gsap.md                   ← GSAP API + patterns
-    ├── framer-motion.md          ← React animations
-    ├── threejs.md                ← 3D / WebGL
-    ├── p5js.md                   ← Creative coding
-    ├── manim.md                  ← Python math animations
-    └── styles.md                 ← 10-style catalog + templates
+│   ├── 3d-video-template.html          ← engine video 3D berbasis CONFIG (+ demo)
+│   └── loaders.html · particles.html · parallax.html
+├── 📂 tools/render-video.mjs           ← export MP4/GIF frame-by-frame
+└── 📂 .github/workflows/render-video.yml
 ```
+
+### Kenapa SKILL.md dibuat ringkas?
+**Progressive disclosure**: AI hanya membaca SKILL.md (±9 KB) lalu membuka file referensi *sesuai tugas*.
+Total pengetahuan jauh lebih banyak dari v1, tapi token yang terpakai per permintaan jauh lebih sedikit.
+
+## 💸 Hemat Token / Limit
+
+- Template **berbasis CONFIG**: video baru = edit ±60 baris, bukan tulis ulang 400 baris.
+- Storyboard berupa tabel, revisi lewat *diff*, tanpa basa-basi, maksimal 1 pertanyaan.
+- Detail: [`references/token-saver.md`](references/token-saver.md) — ada *cheat card* yang bisa ditempel ke chat AI mana pun.
 
 ---
 
@@ -90,7 +98,7 @@ Motion-Mini/
 7.  Cyberpunk / Neon     → Glow pulses, holographic shimmer
 8.  Nature / Organic     → Perlin noise, breath, ripples
 9.  Data-Driven          → Counters, chart transitions, progress
-10. 3D / Spatial         → WebGL depth, particles, post-FX
+10. 3D / Spatial         → WebGL depth, lights, camera spline (DEFAULT for video)
 ```
 
 ---

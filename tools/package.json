@@ -1,0 +1,7 @@
+{
+  "name": "motion-mini-tools",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic frame-by-frame renderer for Motion-Mini 3D videos",
+  "dependencies": { "puppeteer": "^23.0.0" }
+}

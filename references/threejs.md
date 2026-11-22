@@ -442,3 +442,9 @@ gsap.to(mesh.rotation, { y: Math.PI * 2, duration: 2, ease: "power2.inOut" });
 gsap.to(mesh.position, { y: 2, duration: 1, ease: "bounce.out" });
 gsap.to(camera.position, { z: 3, duration: 1.5, ease: "expo.inOut" });
 ```
+
+---
+
+## 🎬 Making a VIDEO instead of an interactive scene?
+Use the config-driven engine: `examples/3d-video-template.html` and read `references/video-3d-pipeline.md`
+(storyboard, camera splines, 3-point lighting, deterministic `renderAt(t)`, MP4/GIF export).
