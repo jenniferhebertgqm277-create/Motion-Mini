@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll Parallax — GSAP ScrollTrigger</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --indigo: #6366f1;
+    --pink:   #ec4899;
+    --bg:     #07070b;
+  }
+
+  body {
+    background: var(--bg);
+    color: #fff;
+    font-family: system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ─── Progress bar ─── */
+  #progress {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--indigo), var(--pink));
+    transform-origin: left;
+    transform: scaleX(0);
+    z-index: 100;
+  }
+
+  /* ─── Hero ─── */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 60%, rgba(99,102,241,0.15) 0%, transparent 70%);
+    will-change: transform;
+  }
+
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    will-change: transform;
+  }
+  .hero-orb-1 {
+    width: 400px; height: 400px;
+    background: rgba(99,102,241,0.25);
+    top: 10%; left: 10%;
+  }
+  .hero-orb-2 {
+    width: 300px; height: 300px;
+    background: rgba(236,72,153,0.2);
+    bottom: 20%; right: 15%;
+  }
+
+  .hero-title {
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-title .gradient {
+    background: linear-gradient(135deg, var(--indigo), var(--pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero-sub {
+    margin-top: 20px;
+    color: rgba(255,255,255,0.5);
+    font-size: 18px;
+    text-align: center;
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.3);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .hero-scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+    animation: scrollLine 1.5s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0%, 100% { transform: scaleY(1) translateY(0); opacity: 1; }
+    50%       { transform: scaleY(0.5) translateY(50%); opacity: 0.3; }
+  }
+
+  /* ─── Sections ─── */
+  section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-inner {
+    max-width: 900px;
+    width: 100%;
+  }
+
+  /* ─── Feature section ─── */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .feature-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 32px;
+    will-change: transform;
+  }
+
+  .feature-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+
+  .feature-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .feature-card p {
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ─── Section label ─── */
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--indigo);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1px;
+  }
+
+  /* ─── Horizontal pin section ─── */
+  .pin-section {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .pin-panels {
+    display: flex;
+    width: 300vw;
+    height: 100vh;
+  }
+
+  .pin-panel {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    font-size: clamp(32px, 5vw, 64px);
+    font-weight: 800;
+  }
+
+  .pin-panel:nth-child(1) { background: rgba(99,102,241,0.08); }
+  .pin-panel:nth-child(2) { background: rgba(236,72,153,0.08); }
+  .pin-panel:nth-child(3) { background: rgba(16,185,129,0.08); }
+
+  .pin-panel .num {
+    font-size: 120px;
+    font-weight: 900;
+    opacity: 0.1;
+    position: absolute;
+  }
+
+  /* ─── Stats section ─── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 48px;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 64px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--indigo), var(--pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+  }
+
+  .stat-label {
+    color: rgba(255,255,255,0.4);
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* ─── Footer spacer ─── */
+  .spacer { height: 20vh; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ─── Hero ─── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+
+  <h1 class="hero-title">
+    Motion is<br>
+    <span class="gradient">Everything</span>
+  </h1>
+  <p class="hero-sub">A scroll-driven parallax experience built with GSAP ScrollTrigger. Every layer moves at its own pace.</p>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- ─── Features ─── -->
+<section id="features">
+  <div class="section-inner">
+    <p class="section-label">What we do</p>
+    <h2 class="section-title">Animate with<br>intention</h2>
+
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">🎞️</div>
+        <h3>Timeline Control</h3>
+        <p>Orchestrate complex sequences with GSAP timelines and precise positional control.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌊</div>
+        <h3>Scroll Driven</h3>
+        <p>Every scroll position maps to a moment in your animation. Full scrub control.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>60fps Always</h3>
+        <p>GPU-composited transforms and opacity ensure buttery smooth performance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Horizontal Pin ─── -->
+<div class="pin-section" id="pinSection">
+  <div class="pin-panels" id="panels">
+    <div class="pin-panel">
+      <span class="num">01</span>
+      <span>🎬</span>
+      <span>Create</span>
+    </div>
+    <div class="pin-panel">
+      <span class="num">02</span>
+      <span>✨</span>
+      <span>Animate</span>
+    </div>
+    <div class="pin-panel">
+      <span class="num">03</span>
+      <span>🚀</span>
+      <span>Ship</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Stats ─── -->
+<section id="stats">
+  <div class="section-inner">
+    <p class="section-label">By the numbers</p>
+    <h2 class="section-title">Impact that moves</h2>
+
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-num" data-target="99">0</div>
+        <div class="stat-label">FPS Average</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-target="12">0</div>
+        <div class="stat-label">Animation Styles</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-target="100">0</div>
+        <div class="stat-label">% GPU Composited</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="spacer"></div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ─── Progress bar ───────────────────────────────────────────
+gsap.to("#progress", {
+  scaleX: 1,
+  ease: "none",
+  scrollTrigger: {
+    trigger: "body",
+    start: "top top",
+    end: "bottom bottom",
+    scrub: true
+  }
+});
+
+// ─── Hero parallax ──────────────────────────────────────────
+gsap.to(".hero-bg", {
+  scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 1 },
+  y: -100, ease: "none"
+});
+
+gsap.to(".hero-orb-1", {
+  scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 2 },
+  y: -200, x: 100, ease: "none"
+});
+
+gsap.to(".hero-orb-2", {
+  scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 1.5 },
+  y: -150, x: -80, ease: "none"
+});
+
+// ─── Hero content fade out on scroll ───────────────────────
+gsap.to([".hero-title", ".hero-sub"], {
+  scrollTrigger: { trigger: ".hero", start: "30% top", end: "70% top", scrub: 1 },
+  y: -60, opacity: 0, stagger: 0.05, ease: "none"
+});
+
+// ─── Hero entry animation ───────────────────────────────────
+gsap.from(".hero-title", { y: 60, opacity: 0, duration: 1, ease: "power3.out", delay: 0.2 });
+gsap.from(".hero-sub",   { y: 40, opacity: 0, duration: 0.8, ease: "power3.out", delay: 0.5 });
+
+// ─── Feature section reveal ─────────────────────────────────
+gsap.from(".section-label", {
+  scrollTrigger: { trigger: "#features", start: "top 75%" },
+  y: 20, opacity: 0, duration: 0.6, ease: "power2.out"
+});
+
+gsap.from(".section-title", {
+  scrollTrigger: { trigger: "#features", start: "top 70%" },
+  y: 40, opacity: 0, duration: 0.8, ease: "power2.out", delay: 0.1
+});
+
+gsap.from(".feature-card", {
+  scrollTrigger: { trigger: ".features", start: "top 80%" },
+  y: 60, opacity: 0, stagger: 0.12, duration: 0.7, ease: "back.out(1.4)"
+});
+
+// ─── Horizontal pin scroll ──────────────────────────────────
+gsap.to("#panels", {
+  xPercent: -200,  // move 200vw to the left (3 panels)
+  ease: "none",
+  scrollTrigger: {
+    trigger: "#pinSection",
+    start: "top top",
+    end: "+=200%",
+    pin: true,
+    scrub: 1,
+    pinSpacing: true
+  }
+});
+
+// ─── Stats section ──────────────────────────────────────────
+gsap.from("#stats .section-label, #stats .section-title", {
+  scrollTrigger: { trigger: "#stats", start: "top 75%" },
+  y: 30, opacity: 0, stagger: 0.1, duration: 0.7, ease: "power2.out"
+});
+
+// Number counters
+document.querySelectorAll(".stat-num").forEach(el => {
+  const target = parseInt(el.dataset.target);
+
+  ScrollTrigger.create({
+    trigger: el,
+    start: "top 80%",
+    once: true,
+    onEnter: () => {
+      const start = performance.now();
+      const duration = 1800;
+
+      function update(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(eased * target);
+        if (p < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+  });
+});
+
+// ─── Stat cards stagger ─────────────────────────────────────
+gsap.from(".stat", {
+  scrollTrigger: { trigger: ".stats-grid", start: "top 80%" },
+  y: 40, opacity: 0, stagger: 0.15, duration: 0.8, ease: "power2.out"
+});
+</script>
+</body>
+</html>

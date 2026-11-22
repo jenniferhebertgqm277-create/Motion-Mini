@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Particle System — Canvas API</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #060608; overflow: hidden; }
+  canvas { display: block; }
+
+  .instructions {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.3);
+    font: 12px/1 system-ui, sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="instructions">Move mouse · Click to burst</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+
+let W = canvas.width  = innerWidth;
+let H = canvas.height = innerHeight;
+let mouse = { x: W / 2, y: H / 2 };
+
+window.addEventListener('resize', () => {
+  W = canvas.width  = innerWidth;
+  H = canvas.height = innerHeight;
+});
+
+// ─── Particle class ──────────────────────────────────────────────
+class Particle {
+  constructor(x, y, { burst = false } = {}) {
+    this.x = x;
+    this.y = y;
+
+    const angle  = Math.random() * Math.PI * 2;
+    const speed  = burst
+      ? Math.random() * 8 + 2    // burst: fast
+      : Math.random() * 2 + 0.5; // trail: slow
+
+    this.vx  = Math.cos(angle) * speed;
+    this.vy  = Math.sin(angle) * speed - (burst ? 0 : 1); // trail floats up
+    this.ax  = 0;
+    this.ay  = burst ? 0.15 : 0.03; // gravity
+
+    this.life    = 1.0;
+    this.decay   = burst
+      ? Math.random() * 0.02 + 0.015
+      : Math.random() * 0.008 + 0.004;
+
+    this.size    = burst
+      ? Math.random() * 6 + 2
+      : Math.random() * 3 + 1;
+
+    this.hue     = Math.random() * 60 + 220; // blue-purple-pink range
+    this.sat     = Math.random() * 20 + 70;
+    this.lit     = Math.random() * 20 + 50;
+    this.glow    = burst;
+  }
+
+  update() {
+    this.vx += this.ax;
+    this.vy += this.ay;
+    this.x  += this.vx;
+    this.y  += this.vy;
+    this.life -= this.decay;
+    // Drift hue
+    this.hue += 0.5;
+  }
+
+  draw(ctx) {
+    const alpha = Math.max(0, this.life);
+    const r     = this.size * this.life;
+
+    if (this.glow) {
+      // Glow effect
+      ctx.shadowBlur  = 15;
+      ctx.shadowColor = `hsl(${this.hue}, ${this.sat}%, ${this.lit}%)`;
+    }
+
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${this.hue}, ${this.sat}%, ${this.lit}%, ${alpha})`;
+    ctx.fill();
+
+    if (this.glow) {
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  isDead() { return this.life <= 0; }
+}
+
+// ─── Particle pool ───────────────────────────────────────────────
+let particles = [];
+let frameCount = 0;
+
+// ─── Input ───────────────────────────────────────────────────────
+document.addEventListener('mousemove', e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+document.addEventListener('click', e => {
+  // Burst of 60 particles on click
+  for (let i = 0; i < 60; i++) {
+    particles.push(new Particle(e.clientX, e.clientY, { burst: true }));
+  }
+});
+
+document.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const t = e.touches[0];
+  mouse.x = t.clientX;
+  mouse.y = t.clientY;
+}, { passive: false });
+
+document.addEventListener('touchstart', e => {
+  const t = e.touches[0];
+  for (let i = 0; i < 60; i++) {
+    particles.push(new Particle(t.clientX, t.clientY, { burst: true }));
+  }
+});
+
+// ─── Render loop ─────────────────────────────────────────────────
+function render() {
+  requestAnimationFrame(render);
+  frameCount++;
+
+  // Semi-transparent clear → trails effect
+  ctx.fillStyle = 'rgba(6, 6, 8, 0.15)';
+  ctx.fillRect(0, 0, W, H);
+
+  // Spawn trail particles near mouse
+  if (frameCount % 2 === 0) {
+    for (let i = 0; i < 3; i++) {
+      const jitter = 10;
+      particles.push(new Particle(
+        mouse.x + (Math.random() - 0.5) * jitter,
+        mouse.y + (Math.random() - 0.5) * jitter
+      ));
+    }
+  }
+
+  // Update + draw + cull dead particles
+  particles = particles.filter(p => !p.isDead());
+  for (const p of particles) {
+    p.update();
+    p.draw(ctx);
+  }
+
+  // HUD
+  ctx.fillStyle = 'rgba(255,255,255,0.15)';
+  ctx.font      = '11px system-ui';
+  ctx.fillText(`Particles: ${particles.length}`, 16, 24);
+}
+
+render();
+</script>
+</body>
+</html>
